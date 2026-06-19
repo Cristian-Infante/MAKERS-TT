@@ -18,8 +18,8 @@ docker-compose up --build
 | Servicio  | URL                          |
 | --------- | ---------------------------- |
 | Frontend  | http://localhost:3000        |
-| API       | http://localhost:5016        |
-| Scalar    | http://localhost:5016/scalar/v1 |
+| API       | https://localhost:7253        |
+| Scalar    | https://localhost:7253/scalar/v1 |
 
 DbUp migra la BD y el seeder inserta usuarios de prueba automáticamente al arrancar.
 
@@ -59,7 +59,7 @@ DbUp migra la BD y el seeder inserta usuarios de prueba automáticamente al arra
 
 Importar `postman/makers-loans.postman_collection.yml` en Postman Desktop.
 
-Variable `baseUrl` = `http://localhost:5016`. Ejecutar Login (User) y Login (Admin) primero — los scripts guardan `tokenUser` y `tokenAdmin` automáticamente.
+Variable `baseUrl` = `https://localhost:7253`. Ejecutar Login (User) y Login (Admin) primero — los scripts guardan `tokenUser` y `tokenAdmin` automáticamente.
 
 ---
 

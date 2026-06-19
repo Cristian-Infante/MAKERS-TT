@@ -43,7 +43,7 @@ services:
       context: ./Front
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: "http://localhost:5016"
+        NEXT_PUBLIC_API_URL: "https://localhost:7253"
     ports:
       - "3000:3000"
     depends_on:
