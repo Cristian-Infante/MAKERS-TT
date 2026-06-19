@@ -1,0 +1,38 @@
+# ─── .NET / C# (Back/) ────────────────────────────────────────────────────────
+Back/bin/
+Back/obj/
+Back/**/bin/
+Back/**/obj/
+Back/**/*.user
+Back/**/*.suo
+Back/**/.vs/
+Back/**/*.log
+Back/**/appsettings.Development.json
+Back/**/appsettings.Local.json
+
+# ─── Next.js / Node (Front/) ──────────────────────────────────────────────────
+Front/.next/
+Front/out/
+Front/node_modules/
+Front/.env
+Front/.env.local
+Front/.env.development.local
+Front/.env.test.local
+Front/.env.production.local
+Front/npm-debug.log*
+Front/yarn-debug.log*
+Front/yarn-error.log*
+Front/.pnpm-debug.log*
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+.env
+.env.*
+!.env.example
+
+# ─── OS / Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+**/.idea/
