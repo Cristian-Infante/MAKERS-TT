@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Loans.Api/Loans.Api.csproj" />
+  <Project Path="Loans.Application/Loans.Application.csproj" />
+  <Project Path="Loans.Domain/Loans.Domain.csproj" />
+  <Project Path="Loans.Infrastructure/Loans.Infrastructure.csproj" />
+  <Project Path="Loans.Tests/Loans.Tests.csproj" />
+</Solution>

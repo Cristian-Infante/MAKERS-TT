@@ -1,0 +1,127 @@
+info:
+  name: Makers Loans API
+  schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+
+variable:
+  - key: baseUrl
+    value: "https://localhost:7253"
+  - key: tokenUser
+    value: ""
+  - key: tokenAdmin
+    value: ""
+  - key: loanId
+    value: ""
+
+item:
+  - name: Auth
+    item:
+      - name: Login (User)
+        request:
+          method: POST
+          url: "{{baseUrl}}/api/v1/Auth/login"
+          header:
+            - key: Content-Type
+              value: application/json
+          body:
+            mode: raw
+            raw: '{"email":"usuario@test.com","password":"123"}'
+        event:
+          - listen: test
+            script:
+              type: text/javascript
+              exec:
+                - "var json = pm.response.json();"
+                - "if (json.token) { pm.collectionVariables.set('tokenUser', json.token); }"
+
+      - name: Login (Admin)
+        request:
+          method: POST
+          url: "{{baseUrl}}/api/v1/Auth/login"
+          header:
+            - key: Content-Type
+              value: application/json
+          body:
+            mode: raw
+            raw: '{"email":"admin@test.com","password":"123"}'
+        event:
+          - listen: test
+            script:
+              type: text/javascript
+              exec:
+                - "var json = pm.response.json();"
+                - "if (json.token) { pm.collectionVariables.set('tokenAdmin', json.token); }"
+
+      - name: Register
+        request:
+          method: POST
+          url: "{{baseUrl}}/api/v1/Auth/register"
+          header:
+            - key: Content-Type
+              value: application/json
+          body:
+            mode: raw
+            raw: '{"email":"nuevo@test.com","password":"123456","fullName":"Nuevo Usuario"}'
+
+  - name: Loans
+    item:
+      - name: Create Loan
+        request:
+          method: POST
+          url: "{{baseUrl}}/api/v1/Loans"
+          header:
+            - key: Content-Type
+              value: application/json
+            - key: Authorization
+              value: "Bearer {{tokenUser}}"
+          body:
+            mode: raw
+            raw: '{"amount":5000,"termInMonths":12,"purpose":"Home renovation"}'
+        event:
+          - listen: test
+            script:
+              type: text/javascript
+              exec:
+                - "var json = pm.response.json();"
+                - "if (json.id) { pm.collectionVariables.set('loanId', json.id); }"
+
+      - name: Get My Loans
+        request:
+          method: GET
+          url: "{{baseUrl}}/api/v1/Loans/my"
+          header:
+            - key: Authorization
+              value: "Bearer {{tokenUser}}"
+
+      - name: Get Admin Loans
+        request:
+          method: GET
+          url: "{{baseUrl}}/api/v1/Loans/admin"
+          header:
+            - key: Authorization
+              value: "Bearer {{tokenAdmin}}"
+
+      - name: Approve Loan
+        request:
+          method: PATCH
+          url: "{{baseUrl}}/api/v1/Loans/{{loanId}}"
+          header:
+            - key: Content-Type
+              value: application/json
+            - key: Authorization
+              value: "Bearer {{tokenAdmin}}"
+          body:
+            mode: raw
+            raw: '{"status":"Approved"}'
+
+      - name: Reject Loan
+        request:
+          method: PATCH
+          url: "{{baseUrl}}/api/v1/Loans/{{loanId}}"
+          header:
+            - key: Content-Type
+              value: application/json
+            - key: Authorization
+              value: "Bearer {{tokenAdmin}}"
+          body:
+            mode: raw
+            raw: '{"status":"Rejected","rejectionReason":"Insufficient income history"}'
