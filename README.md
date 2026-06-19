@@ -4,74 +4,97 @@ Sistema de gestión de préstamos bancarios. API REST en .NET 8 + frontend Next.
 
 ## Requisitos
 
-- .NET SDK 8
-- Node.js 20+
 - Docker Desktop
 
-## Backend
+---
 
-### 1. Levantar SQL Server
-
-```bash
-cd Back
-cp .env.example .env   # completar SA_PASSWORD y Jwt__Secret```bash
-docker-compose up -d
-```
-
-```
-
-```
-
-### 2. Ejecutar API
+## Inicio rápido (Docker — stack completo)
 
 ```bash
-dotnet run --project Back/Loans.Api
+cp .env.example .env        # completar SA_PASSWORD y JWT_SECRET
+docker-compose up --build
 ```
 
-La API corre en `https://localhost:7253`. DbUp migra la BD y el seeder inserta usuarios de prueba automáticamente al arrancar en Development.
+| Servicio  | URL                          |
+| --------- | ---------------------------- |
+| Frontend  | http://localhost:3000        |
+| API       | http://localhost:5016        |
+| Scalar    | http://localhost:5016/scalar/v1 |
 
-### Usuarios de prueba
+DbUp migra la BD y el seeder inserta usuarios de prueba automáticamente al arrancar.
+
+### Variables requeridas (`.env`)
+
+| Variable     | Descripción                              |
+| ------------ | ---------------------------------------- |
+| `SA_PASSWORD` | Contraseña SA de SQL Server (mín. 8 chars, mayúscula, número y símbolo) |
+| `JWT_SECRET`  | Clave HMAC para JWT (mín. 32 chars)     |
+
+---
+
+## Usuarios de prueba
 
 | Email              | Contraseña | Rol   |
 | ------------------ | ---------- | ----- |
 | `usuario@test.com` | `123`      | User  |
 | `admin@test.com`   | `123`      | Admin |
 
-### Ejecutar tests
-
-```bash
-dotnet test Back/Loans.sln
-```
-
-### Documentación API
-
-Scalar disponible en `https://localhost:7253/scalar/v1` (solo en Development).
-
-## Frontend
-
-```bash
-cd Front
-cp .env.example .env.local   # ajustar NEXT_PUBLIC_API_URL si es necesario
-npm install
-npm run dev
-```
-
-Corre en `http://localhost:3000`.
+---
 
 ## Endpoints
 
-| Método | Ruta                      | Auth  | Descripción         |
+| Método  | Ruta                      | Auth  | Descripción          |
 | ------- | ------------------------- | ----- | -------------------- |
-| POST    | `/api/v1/Auth/login`    | —    | Login                |
-| POST    | `/api/v1/Auth/register` | —    | Registro             |
-| POST    | `/api/v1/Loans`         | User  | Crear préstamo      |
-| GET     | `/api/v1/Loans/my`      | User  | Mis préstamos       |
-| GET     | `/api/v1/Loans/admin`   | Admin | Todos los préstamos |
-| PATCH   | `/api/v1/Loans/{id}`    | Admin | Aprobar o rechazar   |
-| GET     | `/health`               | —    | Estado de la BD      |
+| POST    | `/api/v1/Auth/login`      | —     | Login                |
+| POST    | `/api/v1/Auth/register`   | —     | Registro             |
+| POST    | `/api/v1/Loans`           | User  | Crear préstamo       |
+| GET     | `/api/v1/Loans/my`        | User  | Mis préstamos        |
+| GET     | `/api/v1/Loans/admin`     | Admin | Todos los préstamos  |
+| PATCH   | `/api/v1/Loans/{id}`      | Admin | Aprobar o rechazar   |
+| GET     | `/health`                 | —     | Estado de la BD      |
+
+---
 
 ## Postman
 
 Importar `postman/makers-loans.postman_collection.yml` en Postman Desktop.
 
-Variables de colección: `baseUrl` = `https://localhost:7253`. Ejecutar Login (User) y Login (Admin) primero — los scripts guardan `tokenUser` y `tokenAdmin` automáticamente.
+Variable `baseUrl` = `http://localhost:5016`. Ejecutar Login (User) y Login (Admin) primero — los scripts guardan `tokenUser` y `tokenAdmin` automáticamente.
+
+---
+
+## Desarrollo local (sin Docker para API y front)
+
+Requisitos adicionales: .NET SDK 8, Node.js 20+.
+
+### 1. Solo la BD en Docker
+
+```bash
+cd Back
+docker-compose up -d
+```
+
+### 2. API
+
+```bash
+cp Back/.env.example Back/.env   # completar SA_PASSWORD y Jwt__Secret
+dotnet run --project Back/Loans.Api
+```
+
+API en `https://localhost:7253`. Scalar en `https://localhost:7253/scalar/v1`.
+
+### 3. Frontend
+
+```bash
+cp Front/.env.example Front/.env.local
+npm --prefix Front install
+npm --prefix Front run dev
+```
+
+Frontend en `http://localhost:3000`.
+
+### Ejecutar tests
+
+```bash
+dotnet test Back/Loans.sln
+```
